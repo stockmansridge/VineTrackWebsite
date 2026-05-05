@@ -1,22 +1,149 @@
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
-import {
-  ArrowLeft,
-  Calculator,
-  Check,
-  CircleDot,
-  ClipboardList,
-  DollarSign,
-  FileSpreadsheet,
-  Grape,
-  MapPinned,
-  ShieldCheck,
-  Tractor,
-  Wrench,
-} from "lucide-react";
+
+function IconBase({
+  children,
+  className = "h-5 w-5",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      {children}
+    </svg>
+  );
+}
+
+function ArrowLeftIcon({ className }: { className?: string }) {
+  return (
+    <IconBase className={className}>
+      <path d="M19 12H5" />
+      <path d="m12 19-7-7 7-7" />
+    </IconBase>
+  );
+}
+
+function CalculatorIcon({ className }: { className?: string }) {
+  return (
+    <IconBase className={className}>
+      <rect x="5" y="2" width="14" height="20" rx="2" />
+      <path d="M8 6h8" />
+      <path d="M8 10h2" />
+      <path d="M14 10h2" />
+      <path d="M8 14h2" />
+      <path d="M14 14h2" />
+      <path d="M8 18h8" />
+    </IconBase>
+  );
+}
+
+function CheckIcon({ className }: { className?: string }) {
+  return (
+    <IconBase className={className}>
+      <path d="M20 6 9 17l-5-5" />
+    </IconBase>
+  );
+}
+
+function ClipboardListIcon({ className }: { className?: string }) {
+  return (
+    <IconBase className={className}>
+      <rect x="8" y="2" width="8" height="4" rx="1" />
+      <rect x="5" y="4" width="14" height="18" rx="2" />
+      <path d="M9 11h6" />
+      <path d="M9 16h6" />
+      <path d="M9 8h.01" />
+      <path d="M9 13h.01" />
+    </IconBase>
+  );
+}
+
+function DollarSignIcon({ className }: { className?: string }) {
+  return (
+    <IconBase className={className}>
+      <path d="M12 2v20" />
+      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H7" />
+    </IconBase>
+  );
+}
+
+function FileSpreadsheetIcon({ className }: { className?: string }) {
+  return (
+    <IconBase className={className}>
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <path d="M14 2v6h6" />
+      <path d="M8 13h8" />
+      <path d="M8 17h8" />
+      <path d="M10 9v12" />
+      <path d="M14 9v12" />
+    </IconBase>
+  );
+}
+
+function GrapeIcon({ className }: { className?: string }) {
+  return (
+    <IconBase className={className}>
+      <circle cx="12" cy="8" r="2" />
+      <circle cx="9" cy="12" r="2" />
+      <circle cx="15" cy="12" r="2" />
+      <circle cx="12" cy="16" r="2" />
+      <path d="M12 6c0-2 1-3 3-4" />
+    </IconBase>
+  );
+}
+
+function MapPinnedIcon({ className }: { className?: string }) {
+  return (
+    <IconBase className={className}>
+      <path d="M12 21s-6-5.33-6-11a6 6 0 1 1 12 0c0 5.67-6 11-6 11Z" />
+      <circle cx="12" cy="10" r="2.5" />
+    </IconBase>
+  );
+}
+
+function ShieldCheckIcon({ className }: { className?: string }) {
+  return (
+    <IconBase className={className}>
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
+      <path d="m9 12 2 2 4-4" />
+    </IconBase>
+  );
+}
+
+function TractorIcon({ className }: { className?: string }) {
+  return (
+    <IconBase className={className}>
+      <circle cx="7" cy="17" r="3" />
+      <circle cx="17" cy="16" r="4" />
+      <path d="M10 17h3" />
+      <path d="M13 8h4l2 4" />
+      <path d="M5 13h8V8H8l-1-3H4" />
+    </IconBase>
+  );
+}
+
+function WrenchIcon({ className }: { className?: string }) {
+  return (
+    <IconBase className={className}>
+      <path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.4 2.4-3-3 2.4-2.4Z" />
+    </IconBase>
+  );
+}
 
 const APP_ICON =
-  "https://raw.githubusercontent.com/stockmansridge/rork-vine-track/main/ios/VineTrack/Assets.xcassets/AppIcon.appiconset/icon.png";
+  "https://cdn.jsdelivr.net/gh/stockmansridge/rork-vine-track@main/ios/VineTrack/Assets.xcassets/AppIcon.appiconset/icon.png";
+const HERO_SCREENSHOT =
+  "https://cdn.jsdelivr.net/gh/stockmansridge/rork-vine-track@main/screenshots/iphone/en/01_summary_page.png";
 const APP_STORE_BADGE =
   "https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg";
 
@@ -26,78 +153,86 @@ const BRAND = {
   accent: "#C8913A",
 };
 
-const features = [
+type Feature = {
+  icon: ({ className }: { className?: string }) => React.ReactElement;
+  title: string;
+  text: string;
+};
+
+type GearItem = {
+  title: string;
+  brand: string;
+  image: string;
+  alt: string;
+  summary: string;
+  bullets: string[];
+  cta: string;
+  href: string;
+};
+
+const features: Feature[] = [
   {
-    icon: MapPinned,
+    icon: MapPinnedIcon,
     title: "Field issue logging",
     text: "Drop pins for repairs, observations, maintenance jobs, and block notes while moving through the vineyard.",
   },
   {
-    icon: ClipboardList,
+    icon: ClipboardListIcon,
     title: "Spray program records",
     text: "Keep practical spray records and export reports for compliance, planning, and team communication.",
   },
   {
-    icon: DollarSign,
+    icon: DollarSignIcon,
     title: "Costing insights",
     text: "Track vineyard costs across chemical, fuel, labour, and maintenance so day-to-day work is easier to understand financially.",
   },
   {
-    icon: Calculator,
+    icon: CalculatorIcon,
     title: "Yield calculator",
     text: "Use the updated yield calculator with practical vineyard inputs, pruning options, and clearer result displays.",
   },
   {
-    icon: Calculator,
-    title: "Irrigation advisor",
-    text: "Estimate watering needs more clearly with a dedicated irrigation advisor and improved irrigation settings guidance.",
+    icon: CalculatorIcon,
+    title: "Shared weather station data",
+    text: "Connect a Davis station once and share local weather data, rainfall, and setup visibility across the whole vineyard team.",
   },
   {
-    icon: Wrench,
+    icon: WrenchIcon,
     title: "Maintenance logging",
     text: "Record vineyard repairs, maintenance items, and follow-up jobs in one place so nothing gets missed.",
   },
   {
-    icon: Grape,
-    title: "Growth and ripeness tracking",
-    text: "Track E-L stages, crossover timing, ripeness targets, and expected target dates with clearer growth insights.",
+    icon: GrapeIcon,
+    title: "Rainfall and weather insight",
+    text: "Use the Rainfall Calendar, clearer rainfall summaries, and better weather source transparency to understand local conditions more confidently.",
   },
   {
-    icon: MapPinned,
+    icon: MapPinnedIcon,
     title: "Smarter vineyard maps",
-    text: "Use full-screen mapping, added map filters, and richer information overlays to understand vineyard activity more clearly.",
+    text: "Use full-screen mapping, better map styling guidance, and improved visibility across shared vineyard data and equipment.",
   },
   {
-    icon: ShieldCheck,
-    title: "Data health visibility",
-    text: "See data health indicators and improved handling of missing records across weather and vineyard details.",
+    icon: ShieldCheckIcon,
+    title: "Data health and syncing",
+    text: "Benefit from stronger record syncing, better cross-device consistency, and clearer handling of shared vineyard information.",
   },
   {
-    icon: FileSpreadsheet,
+    icon: FileSpreadsheetIcon,
     title: "Report exports",
     text: "Export useful records for vineyard teams, managers, contractors, and seasonal review.",
   },
   {
-    icon: Tractor,
+    icon: TractorIcon,
     title: "Built for mobile field work",
     text: "Designed for iPhone and iPad so vineyard information is available where the work actually happens.",
   },
 ];
 
-const benefits = [
-  "Capture issues the moment they are seen",
-  "Reduce missed jobs and forgotten follow-up",
-  "Track costs across chemical, fuel, labour, and maintenance",
-  "Use built-in tools like the irrigation advisor and yield calculator",
-  "See ripeness targets, data health, and smarter vineyard map insights",
-  "Replace scattered notes with one mobile workflow",
-];
-
 const trustPoints = [
   "Built specifically for vineyard workflow",
   "Made for iPhone and iPad use in the field",
-  "Costing across chemical, fuel, labour, and maintenance",
-  "Latest tools include irrigation advisor, yield calculator, and smarter vineyard maps",
+  "Shared Davis weather data and rainfall tools for the whole vineyard team",
+  "Latest tools include stronger syncing, weather transparency, and smarter vineyard maps",
 ];
 
 const screenshots = [
@@ -105,43 +240,37 @@ const screenshots = [
     title: "Summary dashboard",
     subtitle: "See key vineyard information at a glance.",
     image:
-      "https://raw.githubusercontent.com/stockmansridge/rork-vine-track/main/screenshots/iphone/en/01_summary_page.png",
-  },
-  {
-    title: "Vineyard and block details",
-    subtitle: "Organise vineyards and access block-level information quickly.",
-    image:
-      "https://raw.githubusercontent.com/stockmansridge/rork-vine-track/main/screenshots/iphone/en/01_vineyard_details.png",
+      "https://cdn.jsdelivr.net/gh/stockmansridge/rork-vine-track@main/screenshots/iphone/en/01_summary_page.png",
   },
   {
     title: "Repairs and issue pins",
     subtitle: "Capture maintenance jobs when they are actually seen.",
     image:
-      "https://raw.githubusercontent.com/stockmansridge/rork-vine-track/main/screenshots/iphone/en/02_repairs.png",
+      "https://cdn.jsdelivr.net/gh/stockmansridge/rork-vine-track@main/screenshots/iphone/en/02_repairs.png",
   },
   {
     title: "Growth stage records",
     subtitle: "Track E-L development through the season.",
     image:
-      "https://raw.githubusercontent.com/stockmansridge/rork-vine-track/main/screenshots/iphone/en/03_growth.png",
+      "https://cdn.jsdelivr.net/gh/stockmansridge/rork-vine-track@main/screenshots/iphone/en/03_growth.png",
   },
   {
     title: "Pins and observations",
     subtitle: "Log observations and follow-up tasks in the field.",
     image:
-      "https://raw.githubusercontent.com/stockmansridge/rork-vine-track/main/screenshots/iphone/en/04_pins.png",
+      "https://cdn.jsdelivr.net/gh/stockmansridge/rork-vine-track@main/screenshots/iphone/en/04_pins.png",
   },
   {
     title: "Yield estimate tools",
     subtitle: "Keep practical vineyard calculations close at hand.",
     image:
-      "https://raw.githubusercontent.com/stockmansridge/rork-vine-track/main/screenshots/iphone/en/05_yield_estimate.png",
+      "https://cdn.jsdelivr.net/gh/stockmansridge/rork-vine-track@main/screenshots/iphone/en/05_yield_estimate.png",
   },
   {
     title: "Spray program reporting",
     subtitle: "Export clearer records for planning and compliance.",
     image:
-      "https://raw.githubusercontent.com/stockmansridge/rork-vine-track/main/screenshots/iphone/en/06_spray_program.png",
+      "https://cdn.jsdelivr.net/gh/stockmansridge/rork-vine-track@main/screenshots/iphone/en/06_spray_program.png",
   },
 ];
 
@@ -155,8 +284,41 @@ const workflow = [
     text: "Record pins, repairs, growth stages, and activity as the work happens rather than later from memory.",
   },
   {
-    title: "Export and follow up",
-    text: "Turn practical field notes into useful records and reports for managers, teams, and compliance needs.",
+    title: "Share data and follow up",
+    text: "Use shared weather, synced records, and exported reports to keep the whole vineyard team working from the same information.",
+  },
+];
+
+const recommendedGear: GearItem[] = [
+  {
+    title: "Secure device mounting",
+    brand: "Quad Lock",
+    image: "/gear/quadlock-tractor-growth.png",
+    alt: "Phone securely mounted inside a tractor between vineyard rows using VineTrack",
+    summary:
+      "A secure phone or iPad mini mounting setup makes VineTrack far more practical in the tractor, especially when logging jobs, following rows, and using maps in the field.",
+    bullets: [
+      "Strong option for tractor and ute use",
+      "Useful for iPhone and iPad mini setups",
+      "Helps keep the screen visible and accessible while working",
+    ],
+    cta: "Explore mounting options",
+    href: "https://www.quadlockcase.com.au/",
+  },
+  {
+    title: "Local weather data",
+    brand: "Davis",
+    image: "/gear/davis-weather-station-vineyard.png",
+    alt: "Davis weather station installed in a vineyard",
+    summary:
+      "A solid weather station helps build more localised vineyard insight and can support decisions around disease pressure, spray timing, rainfall tracking, and seasonal conditions.",
+    bullets: [
+      "Trusted weather station brand",
+      "Useful for hyperlocal vineyard conditions",
+      "Supports a stronger decision-making setup around VineTrack",
+    ],
+    cta: "Explore weather station options",
+    href: "https://www.davisinstruments.com/",
   },
 ];
 
@@ -170,22 +332,24 @@ const faqs = [
     a: "VineTrack is designed for iPhone and iPad so teams can use it where the work actually happens rather than relying on notes taken back in the office.",
   },
   {
-    q: "What can I record in the app?",
-    a: "You can use VineTrack for issue pins, repair logging, growth stage records, vineyard observations, spray program records, maintenance logging, and practical vineyard calculations.",
-  },
-  {
     q: "What newer tools are included?",
-    a: "Recent additions include an irrigation advisor, a more capable yield calculator, smarter vineyard map filtering, ripeness target timing, and clearer data-health indicators.",
+    a: "Recent updates include shared Davis weather station data, Rainfall Calendar improvements, stronger syncing between devices, better rainfall summaries, and clearer weather-source transparency.",
   },
   {
-    q: "Can I export records?",
-    a: "Yes. VineTrack is built to turn field activity into clearer records that can be exported and used for follow-up, team communication, planning, and reporting.",
-  },
-  {
-    q: "Is it made for general farming?",
-    a: "No. VineTrack is designed specifically around vineyard workflow, terminology, and practical use in blocks and rows.",
+    q: "Can the whole vineyard team share weather station data?",
+    a: "Yes. The latest app changes are focused on sharing local weather station data, rainfall information, and related visibility across all vineyard members and devices.",
   },
 ];
+
+function validateUniqueTitles(items: { title: string }[]) {
+  const seen = new Set<string>();
+  for (const item of items) {
+    if (seen.has(item.title)) {
+      throw new Error(`Duplicate title detected: ${item.title}`);
+    }
+    seen.add(item.title);
+  }
+}
 
 function SectionHeading({
   eyebrow,
@@ -230,13 +394,7 @@ function ScreenshotCard({
 }
 
 function AppStoreBadge({ className = "h-14 w-auto" }: { className?: string }) {
-  return (
-    <img
-      src={APP_STORE_BADGE}
-      alt="Download on the App Store"
-      className={className}
-    />
-  );
+  return <img src={APP_STORE_BADGE} alt="Download on the App Store" className={className} />;
 }
 
 function Footer({
@@ -249,34 +407,30 @@ function Footer({
       <div className="mx-auto flex max-w-7xl flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>© 2026 VineTrack. Built for practical vineyard work.</div>
         <div className="flex flex-wrap items-center gap-5">
-          <button
-            onClick={() => onNavigate("home", "features")}
-            className="transition hover:text-white"
-          >
+          <button onClick={() => onNavigate("home", "features")} className="transition hover:text-white">
             Features
           </button>
-          <button
-            onClick={() => onNavigate("home", "pricing")}
-            className="transition hover:text-white"
-          >
+          <button onClick={() => onNavigate("home", "gear")} className="transition hover:text-white">
+            Gear
+          </button>
+          <button onClick={() => onNavigate("home", "pricing")} className="transition hover:text-white">
             Pricing
           </button>
-          <button
-            onClick={() => onNavigate("home", "faq")}
+          <a
+            href="https://portal.vinetrack.com.au"
+            target="_blank"
+            rel="noreferrer"
             className="transition hover:text-white"
           >
+            Portal
+          </a>
+          <button onClick={() => onNavigate("home", "faq")} className="transition hover:text-white">
             FAQ
           </button>
-          <button
-            onClick={() => onNavigate("privacy")}
-            className="transition hover:text-white"
-          >
+          <button onClick={() => onNavigate("privacy")} className="transition hover:text-white">
             Privacy & Terms
           </button>
-          <a
-            href="mailto:hello@stockmansridge.com.au"
-            className="transition hover:text-white"
-          >
+          <a href="mailto:hello@stockmansridge.com.au" className="transition hover:text-white">
             Contact
           </a>
         </div>
@@ -384,12 +538,15 @@ function PrivacyPage({
             onClick={() => onNavigate("home")}
             className="inline-flex items-center gap-2 text-sm text-slate-300 transition hover:text-white"
           >
-            <ArrowLeft className="h-4 w-4" /> Back to VineTrack
+            <ArrowLeftIcon className="h-4 w-4" /> Back to VineTrack
           </button>
           <img
             src={APP_ICON}
             alt="VineTrack"
             className="h-11 w-11 rounded-2xl border border-white/10"
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).style.display = "none";
+            }}
           />
         </div>
       </header>
@@ -406,8 +563,7 @@ function PrivacyPage({
             Privacy & Terms
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-            This subpage is part of the VineTrack site and brings your privacy
-            and usage terms together in one clear location.
+            This subpage is part of the VineTrack site and brings your privacy and usage terms together in one clear location.
           </p>
         </div>
       </section>
@@ -415,13 +571,8 @@ function PrivacyPage({
       <section className="mx-auto max-w-4xl px-6 py-16 md:px-10">
         <div className="space-y-8">
           {sections.map((section) => (
-            <div
-              key={section.title}
-              className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-8"
-            >
-              <h2 className="text-2xl font-semibold text-white">
-                {section.title}
-              </h2>
+            <div key={section.title} className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-8">
+              <h2 className="text-2xl font-semibold text-white">{section.title}</h2>
               <div className="mt-4 space-y-4 text-slate-300">
                 {section.body.map((paragraph) => (
                   <p key={paragraph} className="leading-8">
@@ -454,13 +605,14 @@ function HomePage({
                 src={APP_ICON}
                 alt="VineTrack app icon"
                 className="h-11 w-11 object-cover"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).style.display = "none";
+                }}
               />
             </div>
             <div>
               <div className="text-base font-semibold">VineTrack</div>
-              <div className="text-xs text-slate-400">
-                Vineyard field operations
-              </div>
+              <div className="text-xs text-slate-400">Vineyard field operations</div>
             </div>
           </div>
 
@@ -468,11 +620,22 @@ function HomePage({
             <a href="#features" className="transition hover:text-white">
               Features
             </a>
+            <a href="#gear" className="transition hover:text-white">
+              Gear
+            </a>
             <a href="#workflow" className="transition hover:text-white">
               How it works
             </a>
             <a href="#pricing" className="transition hover:text-white">
               Pricing
+            </a>
+            <a
+              href="https://portal.vinetrack.com.au"
+              target="_blank"
+              rel="noreferrer"
+              className="transition hover:text-white"
+            >
+              Portal
             </a>
             <a href="#faq" className="transition hover:text-white">
               FAQ
@@ -515,10 +678,7 @@ function HomePage({
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
-              VineTrack helps vineyard teams record repairs, spray activity,
-              E-L growth stages, observations, costs, irrigation decisions,
-              yield estimates, ripeness timing, and block-level work in one
-              practical mobile workflow built for use in the field.
+              VineTrack helps vineyard teams record repairs, spray activity, E-L growth stages, observations, costs, local weather, rainfall, shared vineyard data, and block-level work in one practical mobile workflow built for use in the field.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-4">
@@ -539,11 +699,8 @@ function HomePage({
 
             <div className="mt-8 grid max-w-2xl gap-3 sm:grid-cols-2">
               {trustPoints.map((item) => (
-                <div
-                  key={item}
-                  className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-200"
-                >
-                  <Check className="mt-0.5 h-4 w-4 text-emerald-300" />
+                <div key={item} className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-200">
+                  <CheckIcon className="mt-0.5 h-4 w-4 flex-shrink-0 text-emerald-300" />
                   <span>{item}</span>
                 </div>
               ))}
@@ -557,17 +714,15 @@ function HomePage({
                 </p>
               </div>
               <div className="rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur">
-                <div className="text-2xl font-semibold">Smarter tools</div>
+                <div className="text-2xl font-semibold">Shared weather</div>
                 <p className="mt-2 text-sm leading-6 text-slate-300">
-                  Now including irrigation guidance, yield calculation, and more
-                  useful vineyard data tools.
+                  Now including Davis weather sharing, rainfall tools, and clearer local weather visibility for the whole team.
                 </p>
               </div>
               <div className="rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur">
-                <div className="text-2xl font-semibold">Sharper insight</div>
+                <div className="text-2xl font-semibold">Stronger syncing</div>
                 <p className="mt-2 text-sm leading-6 text-slate-300">
-                  Map filters, ripeness timing, and data-health indicators make
-                  records easier to act on.
+                  Improved record syncing, tractor visibility, and weather consistency make shared vineyard data easier to trust.
                 </p>
               </div>
             </div>
@@ -590,32 +745,24 @@ function HomePage({
                     src={APP_ICON}
                     alt="VineTrack app icon"
                     className="h-full w-full object-cover"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).style.display = "none";
+                    }}
                   />
                 </div>
                 <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-slate-900">
                   <img
-                    src={screenshots[0].image}
+                    src={HERO_SCREENSHOT}
                     alt={screenshots[0].title}
                     className="h-full w-full object-cover"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).style.display = "none";
+                    }}
                   />
                 </div>
               </div>
             </div>
           </motion.div>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-6 py-12 md:px-10">
-        <div className="grid gap-4 rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 md:grid-cols-3">
-          {benefits.slice(0, 3).map((item) => (
-            <div
-              key={item}
-              className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/5 p-4"
-            >
-              <Check className="mt-0.5 h-5 w-5 text-emerald-300" />
-              <p className="text-sm leading-6 text-slate-200">{item}</p>
-            </div>
-          ))}
         </div>
       </section>
 
@@ -641,16 +788,10 @@ function HomePage({
         <SectionHeading
           eyebrow="Latest in VineTrack"
           title="Recent additions shaped by real vineyard use."
-          text="The app has continued to expand with better irrigation guidance, a stronger yield calculator, smarter map tools, ripeness target timing, and clearer data health indicators."
+          text="The latest version is strongly focused on shared weather data, rainfall tracking, better syncing, and clearer visibility across the vineyard team."
         />
         <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-5">
-          {[
-            "Irrigation advisor",
-            "Yield calculator",
-            "Map filters",
-            "Ripeness targets",
-            "Data health indicators",
-          ].map((item) => (
+          {["Shared Davis weather", "Rainfall Calendar", "Weather transparency", "Cross-device syncing", "Map styling"].map((item) => (
             <div
               key={item}
               className="rounded-[2rem] border border-white/10 bg-white/5 px-5 py-6 text-center text-sm font-medium text-slate-200"
@@ -659,37 +800,23 @@ function HomePage({
             </div>
           ))}
         </div>
-      </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-20 md:px-10">
-        <SectionHeading
-          eyebrow="Highlights"
-          title="The practical vineyard tools teams actually need."
-          text="VineTrack brings together field records, costing visibility, and useful vineyard tools so the app supports both the work itself and the decisions around it."
-        />
-        <div className="mt-12 grid gap-6 lg:grid-cols-2">
+        <div className="mt-14 grid gap-6 lg:grid-cols-2">
           <div className="rounded-[2rem] border border-white/10 bg-slate-900/70 p-8">
             <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-emerald-400/25 bg-emerald-400/10 text-emerald-200">
-              <DollarSign className="h-5 w-5" />
+              <DollarSignIcon className="h-5 w-5" />
             </div>
             <h3 className="text-2xl font-semibold text-white">Costing</h3>
             <p className="mt-3 leading-7 text-slate-300">
-              Keep a clearer view of vineyard costs across chemical, fuel,
-              labour, and maintenance so the real cost of work is easier to
-              understand.
+              Keep a clearer view of vineyard costs across chemical, fuel, labour, and maintenance so the real cost of work is easier to understand.
             </p>
             <div className="mt-6 grid gap-3 text-sm text-slate-300">
-              {[
-                "Chemical costing",
-                "Fuel costing",
-                "Labour costing",
-                "Maintenance costing",
-              ].map((item) => (
+              {["Chemical costing", "Fuel costing", "Labour costing", "Maintenance costing"].map((item) => (
                 <div
                   key={item}
                   className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3"
                 >
-                  <Check className="h-4 w-4 text-emerald-300" />
+                  <CheckIcon className="h-4 w-4 flex-shrink-0 text-emerald-300" />
                   <span>{item}</span>
                 </div>
               ))}
@@ -698,24 +825,19 @@ function HomePage({
 
           <div className="rounded-[2rem] border border-white/10 bg-slate-900/70 p-8">
             <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-emerald-400/25 bg-emerald-400/10 text-emerald-200">
-              <Calculator className="h-5 w-5" />
+              <CalculatorIcon className="h-5 w-5" />
             </div>
-            <h3 className="text-2xl font-semibold text-white">Vineyard tools</h3>
+            <h3 className="text-2xl font-semibold text-white">Weather and vineyard tools</h3>
             <p className="mt-3 leading-7 text-slate-300">
-              Use the app for more than record keeping with practical tools that
-              support planning, estimating, and day-to-day field decisions.
+              Use the app for more than record keeping with practical tools that support planning, local weather visibility, and day-to-day field decisions.
             </p>
             <div className="mt-6 grid gap-3 text-sm text-slate-300">
-              {[
-                "Yield estimation",
-                "Maintenance logging",
-                "Work task calculator",
-              ].map((item) => (
+              {["Yield estimation", "Maintenance logging", "Rainfall Calendar"].map((item) => (
                 <div
                   key={item}
                   className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3"
                 >
-                  <Check className="h-4 w-4 text-emerald-300" />
+                  <CheckIcon className="h-4 w-4 flex-shrink-0 text-emerald-300" />
                   <span>{item}</span>
                 </div>
               ))}
@@ -724,12 +846,74 @@ function HomePage({
         </div>
       </section>
 
+      <section id="gear" className="mx-auto max-w-7xl px-6 py-20 md:px-10">
+        <SectionHeading
+          eyebrow="Recommended gear"
+          title="Build a setup that makes VineTrack work even better."
+          text="For many users, the best experience comes from pairing VineTrack with a secure in-cab mount and a reliable local weather station. This section is designed to guide users toward gear that genuinely supports the workflow."
+        />
+
+        <div className="mt-12 grid gap-6 lg:grid-cols-2">
+          {recommendedGear.map((item) => (
+            <div
+              key={item.title}
+              className="overflow-hidden rounded-[2rem] border border-white/10 bg-slate-900/70"
+            >
+              <div className="aspect-[4/3] w-full overflow-hidden border-b border-white/10 bg-slate-800">
+                <img
+                  src={item.image}
+                  alt={item.alt}
+                  className="h-full w-full object-cover"
+                />
+              </div>
+
+              <div className="p-8">
+                <div className="inline-flex rounded-full border border-amber-300/20 bg-amber-300/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-amber-100">
+                  {item.brand}
+                </div>
+
+                <h3 className="mt-5 text-2xl font-semibold text-white">
+                  {item.title}
+                </h3>
+
+                <p className="mt-3 leading-7 text-slate-300">{item.summary}</p>
+
+                <div className="mt-6 grid gap-3 text-sm text-slate-300">
+                  {item.bullets.map((bullet) => (
+                    <div
+                      key={bullet}
+                      className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3"
+                    >
+                      <CheckIcon className="h-4 w-4 flex-shrink-0 text-emerald-300" />
+                      <span>{bullet}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-6 inline-block rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+                >
+                  {item.cta}
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p className="mt-6 max-w-3xl text-sm leading-7 text-slate-400">
+          Recommended gear is included because it can genuinely improve the VineTrack workflow. Referral links can be added later with a clear disclosure where appropriate.
+        </p>
+      </section>
+
       <section id="features" className="border-y border-white/10 bg-white/[0.03]">
         <div className="mx-auto max-w-7xl px-6 py-20 md:px-10">
           <SectionHeading
             eyebrow="Core features"
             title="Built around the work vineyard teams actually do."
-            text="VineTrack is designed to help record, organise, and follow up on the jobs, observations, and reporting requirements that come up across the season."
+            text="VineTrack is designed to help record, organise, and follow up on the jobs, observations, weather visibility, and reporting requirements that come up across the season."
           />
           <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {features.map((feature) => {
@@ -742,9 +926,7 @@ function HomePage({
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-emerald-400/25 bg-emerald-400/10 text-emerald-200">
                     <Icon className="h-5 w-5" />
                   </div>
-                  <h3 className="text-xl font-semibold text-white">
-                    {feature.title}
-                  </h3>
+                  <h3 className="text-xl font-semibold text-white">{feature.title}</h3>
                   <p className="mt-3 leading-7 text-slate-300">{feature.text}</p>
                 </div>
               );
@@ -757,14 +939,11 @@ function HomePage({
         <SectionHeading
           eyebrow="How it works"
           title="Simple to adopt. Practical in the field. Useful afterwards."
-          text="The workflow is straightforward: set up your vineyard structure, record work as it happens, then use the records and exports for follow-up and reporting."
+          text="The workflow is straightforward: set up your vineyard structure, record work as it happens, share weather and synced information across devices, then use the records and exports for follow-up and reporting."
         />
         <div className="mt-12 grid gap-6 lg:grid-cols-3">
           {workflow.map((step, index) => (
-            <div
-              key={step.title}
-              className="rounded-[2rem] border border-white/10 bg-white/5 p-6"
-            >
+            <div key={step.title} className="rounded-[2rem] border border-white/10 bg-white/5 p-6">
               <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-slate-900 text-sm font-semibold text-white">
                 0{index + 1}
               </div>
@@ -772,83 +951,6 @@ function HomePage({
               <p className="mt-3 leading-7 text-slate-300">{step.text}</p>
             </div>
           ))}
-        </div>
-      </section>
-
-      <section className="border-y border-white/10 bg-[linear-gradient(to_bottom,_rgba(16,185,129,0.06),_rgba(15,23,42,0.1))]">
-        <div className="mx-auto grid max-w-7xl gap-8 px-6 py-20 md:px-10 lg:grid-cols-[1fr_1fr]">
-          <div className="rounded-[2rem] border border-white/10 bg-slate-900/80 p-8">
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-emerald-300/80">
-              Why teams use it
-            </p>
-            <h3 className="mt-4 text-3xl font-semibold tracking-tight">
-              Clean records. Faster decisions.
-            </h3>
-            <p className="mt-5 text-base leading-8 text-slate-300">
-              Vineyard issues are often spotted in the moment and forgotten
-              later. VineTrack helps capture them immediately and turn that
-              information into useful action, reporting, and seasonal knowledge.
-            </p>
-            <div className="mt-8 grid gap-3">
-              {benefits.map((benefit) => (
-                <div
-                  key={benefit}
-                  className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-200"
-                >
-                  {benefit}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="rounded-[2rem] border border-white/10 bg-slate-900/80 p-8">
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-emerald-300/80">
-              Reporting and follow-up
-            </p>
-            <h3 className="mt-4 text-3xl font-semibold tracking-tight">
-              Useful after the day’s work is done.
-            </h3>
-            <p className="mt-5 leading-8 text-slate-300">
-              Turn field observations into practical reports and records that
-              support communication, contractor handover, and seasonal review.
-            </p>
-            <div className="mt-8 rounded-[2rem] border border-white/10 bg-white/5 p-5">
-              <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                <div>
-                  <div className="text-sm text-slate-400">Export preview</div>
-                  <div className="mt-1 text-lg font-semibold">
-                    Spray Program Report
-                  </div>
-                </div>
-                <div className="rounded-xl border border-emerald-400/25 bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-200">
-                  Reporting workflow
-                </div>
-              </div>
-              <div className="mt-4 grid gap-3">
-                <div className="rounded-2xl border border-white/10 bg-slate-950/60 p-4">
-                  <div className="text-xs uppercase tracking-[0.2em] text-slate-500">
-                    Included detail
-                  </div>
-                  <div className="mt-3 grid gap-3 text-sm text-slate-300">
-                    {[
-                      "Block and activity date",
-                      "Product, rate, and operator details",
-                      "Clearer seasonal record keeping",
-                      "Useful team communication and follow-up",
-                    ].map((line) => (
-                      <div
-                        key={line}
-                        className="flex items-center gap-3 rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3"
-                      >
-                        <CircleDot className="h-4 w-4 text-emerald-300" />
-                        <span>{line}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -865,8 +967,7 @@ function HomePage({
             </p>
             <div className="mt-4 text-4xl font-semibold">Free for 3 months</div>
             <p className="mt-4 leading-8 text-slate-300">
-              Give vineyard teams time to trial the workflow in the field before
-              moving to a paid plan.
+              Give vineyard teams time to trial the workflow in the field before moving to a paid plan.
             </p>
             <a
               href="https://apps.apple.com/us/app/vineyard-tracker/id6761143377"
@@ -885,15 +986,15 @@ function HomePage({
               <p className="mt-2 text-slate-400">per device / per month</p>
               <div className="mt-6 space-y-3 text-sm text-slate-300">
                 <div className="flex gap-3">
-                  <Check className="h-4 w-4 text-emerald-300" />
+                  <CheckIcon className="h-4 w-4 flex-shrink-0 text-emerald-300" />
                   Full app access
                 </div>
                 <div className="flex gap-3">
-                  <Check className="h-4 w-4 text-emerald-300" />
+                  <CheckIcon className="h-4 w-4 flex-shrink-0 text-emerald-300" />
                   Field logging and records
                 </div>
                 <div className="flex gap-3">
-                  <Check className="h-4 w-4 text-emerald-300" />
+                  <CheckIcon className="h-4 w-4 flex-shrink-0 text-emerald-300" />
                   Reporting workflow
                 </div>
               </div>
@@ -909,21 +1010,19 @@ function HomePage({
               <p className="text-sm font-semibold uppercase tracking-[0.22em] text-emerald-200">
                 Annual
               </p>
-              <div className="mt-4 text-4xl font-semibold text-white">
-                $99.99
-              </div>
+              <div className="mt-4 text-4xl font-semibold text-white">$99.99</div>
               <p className="mt-2 text-emerald-100/80">per device / per year</p>
               <div className="mt-6 space-y-3 text-sm text-emerald-50">
                 <div className="flex gap-3">
-                  <Check className="h-4 w-4 text-emerald-200" />
+                  <CheckIcon className="h-4 w-4 flex-shrink-0 text-emerald-200" />
                   Best value option
                 </div>
                 <div className="flex gap-3">
-                  <Check className="h-4 w-4 text-emerald-200" />
+                  <CheckIcon className="h-4 w-4 flex-shrink-0 text-emerald-200" />
                   Ongoing vineyard use
                 </div>
                 <div className="flex gap-3">
-                  <Check className="h-4 w-4 text-emerald-200" />
+                  <CheckIcon className="h-4 w-4 flex-shrink-0 text-emerald-200" />
                   Simple annual billing
                 </div>
               </div>
@@ -941,10 +1040,7 @@ function HomePage({
           />
           <div className="mt-12 grid gap-4 lg:grid-cols-2">
             {faqs.map((item) => (
-              <div
-                key={item.q}
-                className="rounded-[2rem] border border-white/10 bg-slate-900/70 p-6"
-              >
+              <div key={item.q} className="rounded-[2rem] border border-white/10 bg-slate-900/70 p-6">
                 <h3 className="text-lg font-semibold text-white">{item.q}</h3>
                 <p className="mt-3 leading-7 text-slate-300">{item.a}</p>
               </div>
@@ -959,13 +1055,15 @@ function HomePage({
             src={APP_ICON}
             alt="VineTrack"
             className="mx-auto h-16 w-16 rounded-[1.25rem] border border-white/10 shadow-lg shadow-black/20"
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).style.display = "none";
+            }}
           />
           <h2 className="mt-6 text-3xl font-semibold tracking-tight md:text-5xl">
             Bring modern vineyard operations into the field.
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-300">
-            Start using VineTrack to record repairs, growth stages, spray
-            activity, and vineyard observations directly from the field.
+            Start using VineTrack to record repairs, growth stages, spray activity, vineyard observations, and shared local weather insights directly from the field.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <a
@@ -997,8 +1095,10 @@ export default function VineTrackSite() {
   const [page, setPage] = useState<"home" | "privacy">("home");
 
   useEffect(() => {
-    document.title = "VineTrack";
+    validateUniqueTitles(features);
+    validateUniqueTitles(recommendedGear);
 
+    document.title = "VineTrack";
     let link = document.querySelector("link[rel='icon']") as HTMLLinkElement | null;
     if (!link) {
       link = document.createElement("link");
@@ -1012,13 +1112,9 @@ export default function VineTrackSite() {
     else setPage("home");
   }, []);
 
-  const handleNavigate = (
-    nextPage: "home" | "privacy",
-    sectionId?: string,
-  ) => {
+  const handleNavigate = (nextPage: "home" | "privacy", sectionId?: string) => {
     setPage(nextPage);
-    window.location.hash =
-      nextPage === "privacy" ? "privacy" : sectionId ? sectionId : "home";
+    window.location.hash = nextPage === "privacy" ? "privacy" : sectionId ? sectionId : "home";
 
     requestAnimationFrame(() => {
       if (nextPage === "privacy") {
