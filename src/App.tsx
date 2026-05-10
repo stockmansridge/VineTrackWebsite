@@ -140,12 +140,31 @@ function WrenchIcon({ className }: { className?: string }) {
   );
 }
 
+function LogoWordmark({ className = "" }: { className?: string }) {
+  return (
+    <div
+      className={className}
+      style={{
+        fontFamily: '"Montserrat", sans-serif',
+        fontWeight: 800,
+        letterSpacing: "-0.02em",
+        lineHeight: 1,
+      }}
+    >
+      <span style={{ color: "#FFFFFF" }}>Vine</span>
+      <span style={{ color: "#85B830" }}>Track</span>
+    </div>
+  );
+}
+
 const APP_ICON =
   "https://cdn.jsdelivr.net/gh/stockmansridge/rork-vine-track@main/ios/VineTrack/Assets.xcassets/AppIcon.appiconset/icon.png";
 const HERO_SCREENSHOT =
   "https://cdn.jsdelivr.net/gh/stockmansridge/rork-vine-track@main/screenshots/iphone/en/01_summary_page.png";
 const APP_STORE_BADGE =
   "https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg";
+const PORTAL_URL = "https://portal.vinetrack.com.au";
+const PORTAL_SCREENSHOT = "/portal/portal-overview.png";
 
 const BRAND = {
   primary: "#263318",
@@ -410,6 +429,9 @@ function Footer({
           <button onClick={() => onNavigate("home", "features")} className="transition hover:text-white">
             Features
           </button>
+          <button onClick={() => onNavigate("home", "platform")} className="transition hover:text-white">
+            App + Portal
+          </button>
           <button onClick={() => onNavigate("home", "gear")} className="transition hover:text-white">
             Gear
           </button>
@@ -417,7 +439,7 @@ function Footer({
             Pricing
           </button>
           <a
-            href="https://portal.vinetrack.com.au"
+            href={PORTAL_URL}
             target="_blank"
             rel="noreferrer"
             className="transition hover:text-white"
@@ -540,14 +562,18 @@ function PrivacyPage({
           >
             <ArrowLeftIcon className="h-4 w-4" /> Back to VineTrack
           </button>
-          <img
-            src={APP_ICON}
-            alt="VineTrack"
-            className="h-11 w-11 rounded-2xl border border-white/10"
-            onError={(e) => {
-              (e.currentTarget as HTMLImageElement).style.display = "none";
-            }}
-          />
+
+          <div className="flex items-center gap-3">
+            <img
+              src={APP_ICON}
+              alt="VineTrack"
+              className="h-11 w-11 rounded-2xl border border-white/10"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).style.display = "none";
+              }}
+            />
+            <LogoWordmark className="text-xl" />
+          </div>
         </div>
       </header>
 
@@ -611,14 +637,17 @@ function HomePage({
               />
             </div>
             <div>
-              <div className="text-base font-semibold">VineTrack</div>
-              <div className="text-xs text-slate-400">Vineyard field operations</div>
+              <LogoWordmark className="text-xl" />
+              <div className="mt-1 text-xs text-slate-400">Vineyard field operations</div>
             </div>
           </div>
 
           <nav className="hidden items-center gap-8 text-sm text-slate-300 md:flex">
             <a href="#features" className="transition hover:text-white">
               Features
+            </a>
+            <a href="#platform" className="transition hover:text-white">
+              App + Portal
             </a>
             <a href="#gear" className="transition hover:text-white">
               Gear
@@ -630,7 +659,7 @@ function HomePage({
               Pricing
             </a>
             <a
-              href="https://portal.vinetrack.com.au"
+              href={PORTAL_URL}
               target="_blank"
               rel="noreferrer"
               className="transition hover:text-white"
@@ -674,11 +703,11 @@ function HomePage({
             </div>
 
             <h1 className="mt-6 max-w-4xl text-4xl font-semibold tracking-tight text-white md:text-6xl md:leading-[1.05]">
-              Modern vineyard software built for real field work.
+              Modern vineyard software for the field and the office.
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
-              VineTrack helps vineyard teams record repairs, spray activity, E-L growth stages, observations, costs, local weather, rainfall, shared vineyard data, and block-level work in one practical mobile workflow built for use in the field.
+              VineTrack gives field teams a practical mobile app for recording work in the vineyard, while managers and owners can use the web portal to set up vineyards, review activity, and keep visibility across the operation.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-4">
@@ -690,10 +719,12 @@ function HomePage({
                 <AppStoreBadge className="h-14 w-auto" />
               </a>
               <a
-                href="#screenshots"
+                href={PORTAL_URL}
+                target="_blank"
+                rel="noreferrer"
                 className="rounded-2xl border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/10"
               >
-                See how it works
+                Open the Portal
               </a>
             </div>
 
@@ -720,9 +751,9 @@ function HomePage({
                 </p>
               </div>
               <div className="rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur">
-                <div className="text-2xl font-semibold">Stronger syncing</div>
+                <div className="text-2xl font-semibold">Manager visibility</div>
                 <p className="mt-2 text-sm leading-6 text-slate-300">
-                  Improved record syncing, tractor visibility, and weather consistency make shared vineyard data easier to trust.
+                  Managers and owners can use the portal to set up, review, and oversee what is happening across the operation.
                 </p>
               </div>
             </div>
@@ -763,6 +794,88 @@ function HomePage({
               </div>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      <section id="platform" className="mx-auto max-w-7xl px-6 py-20 md:px-10">
+        <SectionHeading
+          eyebrow="One system"
+          title="Built for the people doing the work — and the people managing it."
+          text="VineTrack combines a practical mobile app for vineyard teams with a web portal for managers and owners, so setup, field recording, and oversight all work together."
+        />
+
+        <div className="mt-12 grid gap-6 lg:grid-cols-2">
+          <div className="rounded-[2rem] border border-white/10 bg-slate-900/70 p-8">
+            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-emerald-400/25 bg-emerald-400/10 text-emerald-200">
+              <TractorIcon className="h-5 w-5" />
+            </div>
+            <h3 className="text-2xl font-semibold text-white">In the field</h3>
+            <p className="mt-3 leading-7 text-slate-300">
+              Operators and field teams use the mobile app to capture work as it happens in the vineyard.
+            </p>
+            <div className="mt-6 grid gap-3 text-sm text-slate-300">
+              {[
+                "Record repairs, observations, spray activity, and growth stages",
+                "Use the app while working rows and moving through the vineyard",
+                "Capture information in real time rather than later from memory",
+                "Keep practical field records tied to the actual work being done",
+              ].map((item) => (
+                <div
+                  key={item}
+                  className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3"
+                >
+                  <CheckIcon className="h-4 w-4 flex-shrink-0 text-emerald-300" />
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-slate-900/70">
+            <div className="aspect-[16/10] w-full overflow-hidden border-b border-white/10 bg-slate-800">
+              <img
+                src={PORTAL_SCREENSHOT}
+                alt="VineTrack web portal overview showing vineyard map, recent trips, and manager visibility tools"
+                className="h-full w-full object-cover object-top"
+              />
+            </div>
+
+            <div className="p-8">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-emerald-400/25 bg-emerald-400/10 text-emerald-200">
+                <ShieldCheckIcon className="h-5 w-5" />
+              </div>
+              <h3 className="text-2xl font-semibold text-white">In the office</h3>
+              <p className="mt-3 leading-7 text-slate-300">
+                Managers and owners use the web portal to set up vineyards, review field activity, monitor recent work, and keep visibility across the operation.
+              </p>
+
+              <div className="mt-6 grid gap-3 text-sm text-slate-300">
+                {[
+                  "Set up vineyards, blocks, teams, tractors, and equipment",
+                  "Review recent trips, map activity, pins, and operational records",
+                  "Keep clearer oversight of what is happening across the vineyard",
+                  "Use one portal for setup, management, reporting, and owner visibility",
+                ].map((item) => (
+                  <div
+                    key={item}
+                    className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3"
+                  >
+                    <CheckIcon className="h-4 w-4 flex-shrink-0 text-emerald-300" />
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+
+              <a
+                href={PORTAL_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-6 inline-block rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+              >
+                Open the Web Portal
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -1074,10 +1187,12 @@ function HomePage({
               <AppStoreBadge className="h-14 w-auto" />
             </a>
             <a
-              href="mailto:hello@stockmansridge.com.au"
+              href={PORTAL_URL}
+              target="_blank"
+              rel="noreferrer"
               className="rounded-2xl border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
             >
-              Ask a question
+              Open the Portal
             </a>
           </div>
           <p className="mt-6 text-sm text-slate-400">
