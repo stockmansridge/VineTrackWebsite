@@ -33,6 +33,25 @@ function ArrowLeftIcon({ className }: { className?: string }) {
   );
 }
 
+function MenuIcon({ className }: { className?: string }) {
+  return (
+    <IconBase className={className}>
+      <path d="M4 7h16" />
+      <path d="M4 12h16" />
+      <path d="M4 17h16" />
+    </IconBase>
+  );
+}
+
+function XIcon({ className }: { className?: string }) {
+  return (
+    <IconBase className={className}>
+      <path d="M6 6l12 12" />
+      <path d="M18 6 6 18" />
+    </IconBase>
+  );
+}
+
 function CalculatorIcon({ className }: { className?: string }) {
   return (
     <IconBase className={className}>
@@ -165,12 +184,6 @@ const APP_STORE_BADGE =
   "https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg";
 const PORTAL_URL = "https://portal.vinetrack.com.au";
 const PORTAL_SCREENSHOT = "/portal/portal-overview.png";
-
-const BRAND = {
-  primary: "#263318",
-  secondary: "#7A4E2D",
-  accent: "#C8913A",
-};
 
 type Feature = {
   icon: ({ className }: { className?: string }) => React.ReactElement;
@@ -339,6 +352,51 @@ const recommendedGear: GearItem[] = [
     cta: "Explore weather station options",
     href: "https://www.davisinstruments.com/",
   },
+  {
+    title: "Pro GPS / GNSS accuracy",
+    brand: "Bad Elf Flex Mini / Flex Mini Extreme",
+    image: "/gear/bad-elf-flex-mini-vineyard.png",
+    alt: "External GNSS receiver used with VineTrack in a vineyard",
+    summary:
+      "The preferred pro-accuracy direction for VineTrack users who want stronger row confidence, better block setup, more accurate pins, and a hardware pathway toward RTK-grade vineyard mapping.",
+    bullets: [
+      "Best fit for VineTrack row and path intelligence",
+      "Suited to location troubleshooting and block setup",
+      "Premium option for contractors and serious vineyard teams",
+    ],
+    cta: "Explore Bad Elf Flex Mini",
+    href: "https://bad-elf.com/pages/bad-elf-flex-mini",
+  },
+  {
+    title: "Mid-tier external GPS",
+    brand: "Dual XGPS160 SkyPro",
+    image: "/gear/dual-xgps160-vineyard.png",
+    alt: "External GPS receiver for improved VineTrack field tracking",
+    summary:
+      "A useful external GPS receiver for smoother tracking and better field reliability than phone-only GPS, especially where users want a simpler upgrade.",
+    bullets: [
+      "Good balance of cost and capability",
+      "Useful for tractor route recording and field work",
+      "Compatible-style option for users not needing RTK",
+    ],
+    cta: "Explore Dual XGPS160",
+    href: "https://www.dualav.com/product/gps-receivers/xgps160/",
+  },
+  {
+    title: "Budget GPS improvement",
+    brand: "Garmin GLO 2",
+    image: "/gear/garmin-glo-2-vineyard.png",
+    alt: "Garmin external GPS receiver for improved vineyard route tracking",
+    summary:
+      "A straightforward external GPS option for users who mainly want a more stable GPS signal and improved route tracking without moving into survey-grade hardware.",
+    bullets: [
+      "Simple entry-level external GPS receiver",
+      "Useful for general field tracking improvements",
+      "Good budget option before stepping up to pro GNSS",
+    ],
+    cta: "Explore Garmin GLO 2",
+    href: "https://www.garmin.com/en-AU/p/645104/",
+  },
 ];
 
 const faqs = [
@@ -444,7 +502,7 @@ function Footer({
             rel="noreferrer"
             className="transition hover:text-white"
           >
-            Portal
+            Log in
           </a>
           <button onClick={() => onNavigate("home", "faq")} className="transition hover:text-white">
             FAQ
@@ -452,7 +510,7 @@ function Footer({
           <button onClick={() => onNavigate("privacy")} className="transition hover:text-white">
             Privacy & Terms
           </button>
-          <a href="mailto:hello@stockmansridge.com.au" className="transition hover:text-white">
+          <a href="mailto:vinetrack@stockmansridge.com.au" className="transition hover:text-white">
             Contact
           </a>
         </div>
@@ -545,7 +603,7 @@ function PrivacyPage({
       {
         title: "Contact",
         body: [
-          "If you have questions about VineTrack, this Privacy Policy, or these Terms of Use, you can contact: hello@stockmansridge.com.au.",
+          "If you have questions about VineTrack, this Privacy Policy, or these Terms of Use, you can contact: vinetrack@stockmansridge.com.au.",
         ],
       },
     ],
@@ -577,10 +635,7 @@ function PrivacyPage({
         </div>
       </header>
 
-      <section
-        className="border-b border-white/10"
-        style={{ background: `linear-gradient(to bottom, ${BRAND.primary}, #020617)` }}
-      >
+      <section className="border-b border-white/10 bg-gradient-to-b from-[#263318] to-slate-950">
         <div className="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-20">
           <div className="inline-flex rounded-full border border-amber-300/20 bg-amber-300/10 px-4 py-2 text-sm font-medium text-amber-100">
             Privacy Policy & Terms of Use
@@ -621,6 +676,13 @@ function HomePage({
 }: {
   onNavigate: (page: "home" | "privacy", sectionId?: string) => void;
 }) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const handleMobileNavigate = (sectionId?: string) => {
+    setMobileMenuOpen(false);
+    onNavigate("home", sectionId);
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
@@ -662,42 +724,88 @@ function HomePage({
               href={PORTAL_URL}
               target="_blank"
               rel="noreferrer"
-              className="transition hover:text-white"
+              className="rounded-2xl border border-white/15 bg-white/5 px-5 py-2 text-sm font-semibold text-white transition hover:bg-white/10"
             >
-              Portal
+              Log in
             </a>
             <a href="#faq" className="transition hover:text-white">
               FAQ
             </a>
           </nav>
 
-          <a
-            href="https://apps.apple.com/us/app/vineyard-tracker/id6761143377"
-            className="transition hover:opacity-90"
-            aria-label="Download on the App Store"
-          >
-            <AppStoreBadge className="h-11 w-auto" />
-          </a>
+          <div className="flex items-center gap-3">
+            <a
+              href="https://apps.apple.com/us/app/vineyard-tracker/id6761143377"
+              className="hidden transition hover:opacity-90 md:block"
+              aria-label="Download on the App Store"
+            >
+              <AppStoreBadge className="h-11 w-auto" />
+            </a>
+
+            <button
+              type="button"
+              className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 p-2 text-white transition hover:bg-white/10 md:hidden"
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileMenuOpen}
+              onClick={() => setMobileMenuOpen((open) => !open)}
+            >
+              {mobileMenuOpen ? <XIcon className="h-5 w-5" /> : <MenuIcon className="h-5 w-5" />}
+            </button>
+          </div>
         </div>
+
+        {mobileMenuOpen && (
+          <div className="border-t border-white/10 bg-slate-950/95 px-6 py-4 md:hidden">
+            <div className="flex flex-col gap-3 text-sm text-slate-200">
+              <button onClick={() => handleMobileNavigate("features")} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left transition hover:bg-white/10">
+                Features
+              </button>
+              <button onClick={() => handleMobileNavigate("platform")} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left transition hover:bg-white/10">
+                App + Portal
+              </button>
+              <button onClick={() => handleMobileNavigate("gear")} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left transition hover:bg-white/10">
+                Gear
+              </button>
+              <button onClick={() => handleMobileNavigate("workflow")} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left transition hover:bg-white/10">
+                How it works
+              </button>
+              <button onClick={() => handleMobileNavigate("pricing")} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left transition hover:bg-white/10">
+                Pricing
+              </button>
+              <button onClick={() => handleMobileNavigate("faq")} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left transition hover:bg-white/10">
+                FAQ
+              </button>
+
+              <a
+                href={PORTAL_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Log in
+              </a>
+
+              <a
+                href="https://apps.apple.com/us/app/vineyard-tracker/id6761143377"
+                className="rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Download on the App Store
+              </a>
+            </div>
+          </div>
+        )}
       </header>
 
-      <section
-        className="relative overflow-hidden border-b border-white/10"
-        style={{
-          background: `radial-gradient(circle at top left, rgba(200,145,58,0.16), transparent 26%), radial-gradient(circle at top right, rgba(122,78,45,0.22), transparent 24%), linear-gradient(to bottom, ${BRAND.primary}, #020617)`,
-        }}
-      >
+      <section className="relative overflow-hidden border-b border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(200,145,58,0.16),transparent_26%),radial-gradient(circle_at_top_right,rgba(122,78,45,0.22),transparent_24%),linear-gradient(to_bottom,#263318,#020617)]">
         <div className="absolute inset-0 opacity-30">
           <div className="absolute left-0 top-24 h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent" />
           <div className="absolute left-0 top-44 h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
         </div>
 
         <div className="relative mx-auto grid max-w-7xl gap-14 px-6 py-20 md:px-10 md:py-28 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <div className="inline-flex rounded-full border border-amber-300/20 bg-amber-300/10 px-4 py-2 text-sm font-medium text-amber-100">
               Built by vignerons for vignerons
             </div>
@@ -759,16 +867,8 @@ function HomePage({
             </div>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="relative"
-          >
-            <div
-              className="absolute -inset-6 rounded-[2.5rem] blur-3xl"
-              style={{ backgroundColor: "rgba(200,145,58,0.10)" }}
-            />
+          <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="relative">
+            <div className="absolute -inset-6 rounded-[2.5rem] bg-[rgba(200,145,58,0.10)] blur-3xl" />
             <div className="relative rounded-[2.5rem] border border-white/10 bg-white/5 p-4 shadow-2xl shadow-black/40 backdrop-blur-xl">
               <div className="grid gap-4 lg:grid-cols-[0.92fr_1.08fr]">
                 <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-slate-900">
@@ -963,10 +1063,25 @@ function HomePage({
         <SectionHeading
           eyebrow="Recommended gear"
           title="Build a setup that makes VineTrack work even better."
-          text="For many users, the best experience comes from pairing VineTrack with a secure in-cab mount and a reliable local weather station. This section is designed to guide users toward gear that genuinely supports the workflow."
+          text="VineTrack works with the iPhone out of the box, but the best field experience can come from pairing it with secure mounting, reliable local weather data, and optional external GPS or GNSS hardware for improved row confidence."
         />
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-2">
+        <div className="mt-8 rounded-[2rem] border border-white/10 bg-white/5 p-8">
+          <div className="inline-flex rounded-full border border-amber-300/20 bg-amber-300/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-amber-100">
+            Improved GPS accuracy
+          </div>
+          <h3 className="mt-5 text-2xl font-semibold text-white">
+            External GPS and GNSS receivers for vineyard row work.
+          </h3>
+          <p className="mt-3 max-w-4xl leading-7 text-slate-300">
+            Vineyard rows are close together, so better GPS is not just about drawing a cleaner map line. For VineTrack, improved accuracy can help with row confidence, cleaner trip records, better pin placement, and more useful location troubleshooting.
+          </p>
+          <p className="mt-3 max-w-4xl leading-7 text-slate-300">
+            Bad Elf Flex Mini is the preferred pro-accuracy option for VineTrack. Dual XGPS160 and Garmin GLO 2 are sensible external GPS options for users who want a simpler upgrade.
+          </p>
+        </div>
+
+        <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {recommendedGear.map((item) => (
             <div
               key={item.title}
@@ -1070,75 +1185,90 @@ function HomePage({
       <section id="pricing" className="mx-auto max-w-7xl px-6 py-20 md:px-10">
         <SectionHeading
           eyebrow="Pricing"
-          title="Simple pricing for ongoing vineyard use."
-          text="Keep the offer easy to understand: a free trial to get started, then straightforward monthly or annual pricing."
+          title="Choose the plan that fits your vineyard."
+          text="Start now on the current introductory offer, or view the new pricing structure coming from 1 July 2026."
         />
-        <div className="mt-12 grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
+
+        <div className="mt-12 grid gap-8 xl:grid-cols-2">
           <div className="rounded-[2rem] border border-white/10 bg-white/5 p-8">
             <p className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">
-              Current offer
+              Current introductory pricing
             </p>
-            <div className="mt-4 text-4xl font-semibold">Free for 3 months</div>
-            <p className="mt-4 leading-8 text-slate-300">
-              Give vineyard teams time to trial the workflow in the field before moving to a paid plan.
-            </p>
+            <p className="mt-2 text-sm text-slate-300">Available until 30 June 2026</p>
+
+            <div className="mt-6 overflow-hidden rounded-[1.5rem] border border-white/10">
+              <div className="grid grid-cols-2 bg-white/5 px-4 py-3 text-sm font-semibold text-white">
+                <div>Introductory Plan</div>
+                <div>Price</div>
+              </div>
+
+              {[
+                ["VineTrack Monthly", "$9.99/month"],
+                ["VineTrack Yearly", "$99/year"],
+                ["Trial", "3 months free"],
+              ].map(([plan, price]) => (
+                <div
+                  key={plan}
+                  className="grid grid-cols-2 border-t border-white/10 px-4 py-3 text-sm text-slate-300"
+                >
+                  <div>{plan}</div>
+                  <div>{price}</div>
+                </div>
+              ))}
+            </div>
+
             <a
               href="https://apps.apple.com/us/app/vineyard-tracker/id6761143377"
-              className="mt-8 inline-block transition hover:opacity-90"
-              aria-label="Download on the App Store"
+              className="mt-8 inline-block rounded-2xl border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
             >
-              <AppStoreBadge className="h-14 w-auto" />
+              Start before 1 July
             </a>
           </div>
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="rounded-[2rem] border border-white/10 bg-slate-900/80 p-8">
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-emerald-300/80">
-                Monthly
-              </p>
-              <div className="mt-4 text-4xl font-semibold">$9.99</div>
-              <p className="mt-2 text-slate-400">per device / per month</p>
-              <div className="mt-6 space-y-3 text-sm text-slate-300">
-                <div className="flex gap-3">
-                  <CheckIcon className="h-4 w-4 flex-shrink-0 text-emerald-300" />
-                  Full app access
-                </div>
-                <div className="flex gap-3">
-                  <CheckIcon className="h-4 w-4 flex-shrink-0 text-emerald-300" />
-                  Field logging and records
-                </div>
-                <div className="flex gap-3">
-                  <CheckIcon className="h-4 w-4 flex-shrink-0 text-emerald-300" />
-                  Reporting workflow
-                </div>
+
+          <div className="rounded-[2rem] border border-emerald-400/20 bg-slate-900/80 p-8 ring-1 ring-emerald-400/10">
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-emerald-300/80">
+              New pricing from 1 July 2026
+            </p>
+            <p className="mt-2 text-sm text-slate-300">Includes 3 months free trial</p>
+
+            <div className="mt-6 overflow-hidden rounded-[1.5rem] border border-white/10">
+              <div className="grid grid-cols-[1.2fr_1fr_1.1fr] bg-white/5 px-4 py-3 text-sm font-semibold text-white">
+                <div>Plan</div>
+                <div>Price</div>
+                <div>Best for</div>
               </div>
+
+              {[
+                ["Solo", "$179.99/year via iPhone", "Owner-operators"],
+                ["Team", "$799/year ex GST", "Vineyard teams"],
+                ["Enterprise", "From $1,499/year ex GST", "Larger or multi-vineyard businesses"],
+                ["Trial", "3 months free", "All plans"],
+              ].map(([plan, price, bestFor]) => (
+                <div
+                  key={`${plan}-${price}`}
+                  className="grid grid-cols-[1.2fr_1fr_1.1fr] border-t border-white/10 px-4 py-3 text-sm text-slate-300"
+                >
+                  <div>{plan}</div>
+                  <div>{price}</div>
+                  <div>{bestFor}</div>
+                </div>
+              ))}
             </div>
-            <div
-              className="rounded-[2rem] border p-8 ring-1"
-              style={{
-                borderColor: "rgba(200,145,58,0.22)",
-                backgroundColor: "rgba(200,145,58,0.12)",
-                boxShadow: "inset 0 0 0 1px rgba(200,145,58,0.08)",
-              }}
-            >
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-emerald-200">
-                Annual
-              </p>
-              <div className="mt-4 text-4xl font-semibold text-white">$99.99</div>
-              <p className="mt-2 text-emerald-100/80">per device / per year</p>
-              <div className="mt-6 space-y-3 text-sm text-emerald-50">
-                <div className="flex gap-3">
-                  <CheckIcon className="h-4 w-4 flex-shrink-0 text-emerald-200" />
-                  Best value option
-                </div>
-                <div className="flex gap-3">
-                  <CheckIcon className="h-4 w-4 flex-shrink-0 text-emerald-200" />
-                  Ongoing vineyard use
-                </div>
-                <div className="flex gap-3">
-                  <CheckIcon className="h-4 w-4 flex-shrink-0 text-emerald-200" />
-                  Simple annual billing
-                </div>
-              </div>
+
+            <div className="mt-8 flex flex-wrap gap-4">
+              <a
+                href="#pricing"
+                className="rounded-2xl border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+              >
+                View July pricing
+              </a>
+
+              <a
+                href="#pricing"
+                className="rounded-2xl border border-emerald-400/20 bg-emerald-400/10 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-400/15"
+              >
+                Join from July 1st
+              </a>
             </div>
           </div>
         </div>
@@ -1196,7 +1326,7 @@ function HomePage({
             </a>
           </div>
           <p className="mt-6 text-sm text-slate-400">
-            Free trial available, then per-device subscription pricing applies.
+            Free trial available, then paid plans apply.
           </p>
         </div>
       </section>
