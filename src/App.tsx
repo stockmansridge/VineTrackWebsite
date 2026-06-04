@@ -202,6 +202,24 @@ type GearItem = {
   href: string;
 };
 
+const platformStats = [
+  {
+    value: "1000+",
+    unit: "ha",
+    label: "Under management",
+  },
+  {
+    value: "45",
+    unit: "",
+    label: "Vineyards",
+  },
+  {
+    value: "23.6",
+    unit: "ha",
+    label: "Average ha per vineyard",
+  },
+];
+
 const features: Feature[] = [
   {
     icon: MapPinnedIcon,
@@ -844,27 +862,6 @@ function HomePage({
                 </div>
               ))}
             </div>
-
-            <div className="mt-10 grid max-w-3xl gap-4 sm:grid-cols-3">
-              <div className="rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur">
-                <div className="text-2xl font-semibold">In-field</div>
-                <p className="mt-2 text-sm leading-6 text-slate-300">
-                  Designed around vineyard workflow, not office-first software.
-                </p>
-              </div>
-              <div className="rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur">
-                <div className="text-2xl font-semibold">Shared weather</div>
-                <p className="mt-2 text-sm leading-6 text-slate-300">
-                  Now including Davis weather sharing, rainfall tools, and clearer local weather visibility for the whole team.
-                </p>
-              </div>
-              <div className="rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur">
-                <div className="text-2xl font-semibold">Manager visibility</div>
-                <p className="mt-2 text-sm leading-6 text-slate-300">
-                  Managers and owners can use the portal to set up, review, and oversee what is happening across the operation.
-                </p>
-              </div>
-            </div>
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="relative">
@@ -894,6 +891,29 @@ function HomePage({
               </div>
             </div>
           </motion.div>
+        </div>
+
+        <div className="relative mx-auto max-w-7xl px-6 pb-16 md:px-10 md:pb-20">
+          <div className="grid gap-4 md:grid-cols-3">
+            {platformStats.map((stat) => (
+              <div
+                key={stat.label}
+                className="rounded-[2rem] border border-white/10 bg-white/5 px-6 py-6 backdrop-blur"
+              >
+                <div className="flex items-end gap-2">
+                  <div className="text-4xl font-semibold tracking-tight text-white md:text-5xl">
+                    {stat.value}
+                  </div>
+                  {stat.unit ? (
+                    <div className="pb-1 text-sm font-semibold uppercase tracking-[0.18em] text-emerald-300/80">
+                      {stat.unit}
+                    </div>
+                  ) : null}
+                </div>
+                <p className="mt-3 text-sm leading-6 text-slate-300">{stat.label}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
